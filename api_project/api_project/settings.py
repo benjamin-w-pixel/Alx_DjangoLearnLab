@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', 
      'api',  # Assuming 'api' is your app name
+     'rest_framework.authtoken',  # If you are using token authentication
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'api_project.wsgi.application'
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Default permission
+    ],
+}
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
