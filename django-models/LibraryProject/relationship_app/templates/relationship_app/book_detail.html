@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<p>Author: {{ book.author }}</p>
+<p>ISBN: {{ book.isbn }}</p>
+<p>Published: {{ book.published_date }}</p>
+<p>Description: {{ book.description }}</p>
+
+{% if perms.relationship_app.can_change_book %}
+    <a href="{% url 'edit_book' book.pk %}">Edit</a>
+{% endif %}
+{% if perms.relationship_app.can_delete_book %}
+    <a href="{% url 'delete_book' book.pk %}">Delete</a>
+{% endif %}
+<a href="{% url 'book_list' %}">Back to list</a>
+{% endblock %}
