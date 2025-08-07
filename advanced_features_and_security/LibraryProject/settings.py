@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
     'bookshelf',
 ]
 
@@ -69,7 +69,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 
-
+# Add login redirect URL
+LOGIN_REDIRECT_URL = 'list-books'  # Your book list view name
+LOGOUT_REDIRECT_URL = 'login'  # Or change to 'list-books' if preferred
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
