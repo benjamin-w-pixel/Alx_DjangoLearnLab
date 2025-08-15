@@ -1,0 +1,27 @@
+<!-- profile.html -->
+{% extends "blog/base.html" %}
+
+{% block content %}
+<h2>Profile</h2>
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" value="{{ user.username }}" disabled>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" name="email" value="{{ user.email }}">
+    </div>
+    <div>
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" value="{{ user.first_name }}">
+    </div>
+    <div>
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" value="{{ user.last_name }}">
+    </div>
+    <button type="submit">Update Profile</button>
+</form>
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}
