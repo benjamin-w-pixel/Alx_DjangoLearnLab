@@ -9,13 +9,15 @@
 <header>
     <h1><a href="/">Django Blog</a></h1>
     <nav>
-        {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">Profile</a>
-            <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'register' %}">Register</a>
-        {% endif %}
+        <!-- Add this in your navigation section -->
+{% if user.is_authenticated %}
+    <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
+    <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+{% else %}
+    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+{% endif %}
     </nav>
 </header>
     <div class="container">
