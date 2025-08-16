@@ -21,6 +21,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
+     published_date = models.DateTimeField(default=timezone.now)  # Add this line
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = TaggableManager()  # Add this line for tags
 
