@@ -12,13 +12,20 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from .forms import RegisterForm, PostForm, CommentForm
 from .models import Post, Comment
-
+from .search import search_posts
+from taggit.models import Tag
 def home(request):
     context = {
         'posts': Post.objects.all()
     }
     return render(request, 'blog/home.html', context)
-
+class TagListView(ListView):
+    model = Post
+    template_name = 'blog/home.html'
+    context_object_name = 'posts'
+    
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs.get('tag_slug'))
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html'
