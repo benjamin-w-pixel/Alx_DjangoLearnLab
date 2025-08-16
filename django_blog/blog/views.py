@@ -14,6 +14,15 @@ from .forms import RegisterForm, PostForm, CommentForm
 from .models import Post, Comment
 from .search import search_posts
 from taggit.models import Tag
+from django.db.models import Q
+
+def search_posts(query):
+    return Post.objects.filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(tags__name__icontains=query)
+    ).distinct()
+
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -32,7 +41,13 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 5
-
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_query = self.request.GET.get('q')
+        
+        if search_query:
+            queryset = search_posts(search_query)
+        return queryset.order_by('-date_posted')
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
