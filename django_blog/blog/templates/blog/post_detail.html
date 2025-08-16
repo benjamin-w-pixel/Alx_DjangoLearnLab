@@ -1,5 +1,45 @@
 {% extends "blog/base.html" %}
 {% block content %}
+
+<article class="post">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
+    <p class="date">Published on {{ post.published_date }}</p>
+</article>
+
+<section class="comments">
+    <h3>Comments ({{ comments.count }})</h3>
+    
+    {% for comment in comments %}
+    <div class="comment">
+        <p class="comment-author">{{ comment.author.username }}</p>
+        <p class="comment-date">{{ comment.created_at }}</p>
+        <p class="comment-content">{{ comment.content }}</p>
+        
+        {% if comment.author == user %}
+        <div class="comment-actions">
+            <a href="{% url 'edit_comment' pk=comment.pk %}" class="btn btn-sm">Edit</a>
+            <a href="{% url 'delete_comment' pk=comment.pk %}" class="btn btn-sm">Delete</a>
+        </div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+    
+    {% if user.is_authenticated %}
+    <div class="add-comment">
+        <h4>Add a comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+    {% else %}
+    <p><a href="{% url 'login' %}">Log in</a> to leave a comment.</p>
+    {% endif %}
+</section>
     <article class="media content-section">
         <div class="media-body">
             <div class="article-metadata">
