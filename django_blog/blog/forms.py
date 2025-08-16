@@ -16,7 +16,7 @@ class CommentForm(forms.ModelForm):
                 'rows': 3
             })
         }
-class TagWidget(forms.TextInput):
+class TagWidget():
     def render(self, name, value, attrs=None, renderer=None):
         if value:
             tags = ', '.join([tag.name for tag in value.all()])
