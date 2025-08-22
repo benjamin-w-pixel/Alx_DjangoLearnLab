@@ -1,8 +1,10 @@
-from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet
+from rest_framework.routers import SimpleRouter
+from .views import PostViewSet
+from django.urls import path, include
+router = SimpleRouter()
+router.register(r'posts', PostViewSet, basename='post')
 
-router = DefaultRouter()
-router.register(r"posts", PostViewSet, basename="post")
-router.register(r"comments", CommentViewSet, basename="comment")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path('posts/<int:id>/like/', PostViewSet.as_view({'post': 'like'}), name='post-like'),
+    *router.urls,
+]
