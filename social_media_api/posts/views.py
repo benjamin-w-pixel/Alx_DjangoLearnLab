@@ -5,8 +5,8 @@ from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.select_related("author").all()
-    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     # search by title/content; filter by author id (e.g., ?author=1) and created_at date
@@ -20,7 +20,9 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.select_related("post", "author").all()
+    queryset = Comment.objects.all()
+
+
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
