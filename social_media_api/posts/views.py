@@ -56,9 +56,7 @@ def like_post(request, pk):
     # Check if user already liked the post using get_or_create pattern
     like, created = Like.objects.get_or_create(
         user=request.user,
-        post=post,
-        defaults={'user': request.user, 'post': post}
-    )
+        post=post )
     
     if not created:
         return Response(
