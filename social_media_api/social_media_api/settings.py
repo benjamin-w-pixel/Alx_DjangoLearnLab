@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -150,3 +151,5 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_SSL_REDIRECT = True
 # Port configuration for deployment
 PORT = int(os.environ.get('PORT', 8000))
+# Static files configuration
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
