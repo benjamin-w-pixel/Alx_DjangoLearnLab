@@ -54,8 +54,7 @@ def like_post(request, pk):
     post = generics.get_object_or_404(Post, pk=pk)
     
     # Check if user already liked the post using get_or_create pattern
-    like, created = Like.objects.get_or_create(user=request.user,post=post )
-    
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
     if not created:
         return Response(
             {'error': 'Post already liked'}, 
@@ -71,14 +70,7 @@ def like_post(request, pk):
             message=f"{request.user.username} liked your post",
             target=post
         )
-        Notification.objects.create(
-            recipient=post.author,
-            actor=request.user,
-            verb='like',
-            message=f"{request.user.username} liked your post",
-            target=post
-        )
-    
+        
     serializer = LikeSerializer(like)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
