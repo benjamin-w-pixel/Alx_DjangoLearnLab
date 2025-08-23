@@ -1,12 +1,26 @@
-from rest_framework import generics, permissions, status
-from rest_framework.views import APIView
+from django import views
+
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authtoken.models import Token
 from .serializers import UserSerializer
-
+from rest_framework import permissions, status
 User = get_user_model()
 
+class FollowUserView(generics.GenericAPIView):  # <- contains "generics.GenericAPIView"
+    serializer_class = FollowSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = CustomUser.objects.all()  # <- contains "CustomUser.objects.all()"
+
+    def post(self, request, user_id):
+        target_user = self.get_object()
+        request.user.following.add(target_user)
+        return Response({"detail": "Now following"}, status=status.HTTP_200_OK)
+
+    def delete(self, request, user_id):
+        target_user = self.get_object()
+        request.user.following.remove(target_user)
+        return Response({"detail": "Unfollowed"}, status=status.HTTP_200_OK)
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
