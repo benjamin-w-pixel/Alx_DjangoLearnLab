@@ -119,3 +119,49 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # File upload security
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB
 FILE_UPLOAD_PERMISSIONS = 0o644
+# LibraryProject/settings.py
+# Add this to your existing security settings section
+
+# ================= HTTPS & SECURITY CONFIGURATION =================
+# Documentation: This section implements comprehensive security measures for HTTPS enforcement
+# and protection against common web vulnerabilities.
+
+# HTTPS Enforcement Settings
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=True, cast=bool)
+SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=True, cast=bool)
+
+# Secure Cookie Settings
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)
+
+# Security Headers Configuration
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = config('SECURE_CONTENT_TYPE_NOSNIFF', default=True, cast=bool)
+SECURE_BROWSER_XSS_FILTER = config('SECURE_BROWSER_XSS_FILTER', default=True, cast=bool)
+
+# Additional Security Settings
+SECURE_REFERRER_POLICY = 'same-origin'
+
+# SECURE_PROXY_SSL_HEADER: Handle HTTPS detection behind proxies
+# This tells Django to trust the X-Forwarded-Proto header that comes from your proxy/load balancer
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Session Security
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+
+# CSRF Settings
+CSRF_USE_SESSIONS = True
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
+
+# File Upload Security
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440  # 2.5MB
+FILE_UPLOAD_PERMISSIONS = 0o644
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
