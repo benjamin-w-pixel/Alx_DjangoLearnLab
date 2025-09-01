@@ -1,0 +1,319 @@
+<!-- bookshelf/templates/bookshelf/book_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List - Library Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .search-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .search-btn {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .search-btn:hover {
+            background-color: #2980b9;
+        }
+        .action-buttons {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #27ae60;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #229954;
+        }
+        .btn-secondary {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #2980b9;
+        }
+        .btn-example {
+            background-color: #9b59b6;
+            color: white;
+        }
+        .btn-example:hover {
+            background-color: #8e44ad;
+        }
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .book-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .book-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .book-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .book-author {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .book-details {
+            margin-bottom: 15px;
+        }
+        .book-detail {
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        .book-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.9em;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        .btn-view {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .availability {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .unavailable {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .no-books {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Library Management System</h1>
+        <p class="subtitle">Manage your book collection with ease and security</p>
+    </div>
+
+    <div class="container">
+        <!-- Messages -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message message-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h3>🔍 Search Books</h3>
+            <form method="get" class="search-form">
+                <input type="text" name="q" value="{{ search_query }}" placeholder="Search by title, author, or ISBN..." class="search-input">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+            {% if search_query %}
+            <p style="margin-top: 10px;">Search results for: <strong>"{{ search_query }}"</strong></p>
+            {% endif %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            {% if perms.bookshelf.can_create %}
+            <a href="{% url 'book_create' %}" class="btn btn-primary">➕ Add New Book</a>
+            {% endif %}
+            
+            <a href="{% url 'example_form' %}" class="btn btn-example">📝 Example Form</a>
+            
+            {% if search_query %}
+            <a href="{% url 'book_list' %}" class="btn btn-secondary">↶ Clear Search</a>
+            {% endif %}
+        </div>
+
+        <!-- Books List -->
+        <h2>📖 Book Collection ({{ books|length }} books)</h2>
+        
+        {% if books %}
+        <div class="books-grid">
+            {% for book in books %}
+            <div class="book-card">
+                <div class="book-title">{{ book.title }}</div>
+                <div class="book-author">by {{ book.author }}</div>
+                
+                <div class="book-details">
+                    <div class="book-detail"><strong>ISBN:</strong> {{ book.isbn }}</div>
+                    <div class="book-detail"><strong>Published:</strong> {{ book.published_date }}</div>
+                    <div class="book-detail">
+                        <strong>Status:</strong> 
+                        <span class="availability {% if book.is_available %}available{% else %}unavailable{% endif %}">
+                            {% if book.is_available %}Available{% else %}Not Available{% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="book-actions">
+                    <a href="{% url 'book_detail' book.pk %}" class="btn-small btn-view">View Details</a>
+                    
+                    {% if perms.bookshelf.can_edit %}
+                    <a href="{% url 'book_edit' book.pk %}" class="btn-small btn-edit">Edit</a>
+                    {% endif %}
+                    
+                    {% if perms.bookshelf.can_delete %}
+                    <a href="{% url 'book_delete' book.pk %}" class="btn-small btn-delete">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-books">
+            <h3>No books found</h3>
+            <p>{% if search_query %}Try a different search term{% else %}Start by adding some books to your collection{% endif %}</p>
+            {% if not search_query and perms.bookshelf.can_create %}
+            <a href="{% url 'book_create' %}" class="btn btn-primary">Add Your First Book</a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Security Features Info -->
+        <div style="margin-top: 40px; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+            <h3>🛡️ Security Features Implemented:</h3>
+            <ul>
+                <li>✅ Permission-based access control</li>
+                <li>✅ CSRF protection on all forms</li>
+                <li>✅ XSS prevention through input sanitization</li>
+                <li>✅ SQL injection prevention through Django ORM</li>
+                <li>✅ Secure cookie settings</li>
+                <li>✅ Content Security Policy headers</li>
+                <li>✅ Clickjacking protection</li>
+                <li>✅ XSS filter enabled</li>
+                <li>✅ MIME type sniffing prevention</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
